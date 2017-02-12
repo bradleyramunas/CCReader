@@ -17,6 +17,13 @@ public class URL {
         return new URL("http://talk.collegeconfidential.com" + url);
     }
 
+    public static URL createURLFromUnspecifiedSource(String url){
+        if(url.contains("collegeconfidential.com")){
+            return new URL(url);
+        }else{
+            return createURLFromRelativeURL(url);
+        }
+    }
 
     @Override
     public String toString() {

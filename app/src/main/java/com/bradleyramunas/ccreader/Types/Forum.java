@@ -16,6 +16,8 @@ public class Forum implements Page {
         this.url = url;
         this.boardName = boardName;
         this.hasSubTreeCounts = false;
+        threadCount = "";
+        replyCount = "";
     }
 
     public Forum(URL url, String boardName, String threadCount, String replyCount) {
@@ -27,11 +29,35 @@ public class Forum implements Page {
     }
 
     public static Forum createForumFromRelativeURL(String url, String boardName){
-        return new Forum(URL.createURLFromRelativeURL(url), boardName);
+        return new Forum(URL.createURLFromUnspecifiedSource(url), boardName);
     }
 
     public static Forum createForumFromRelativeURL(String url, String boardName, String threadCount, String replyCount){
-        return new Forum(URL.createURLFromRelativeURL(url), boardName, threadCount, replyCount);
+        return new Forum(URL.createURLFromUnspecifiedSource(url), boardName, threadCount, replyCount);
+    }
+
+    public boolean isShortForum(){
+        return hasSubTreeCounts;
+    }
+
+    public String getBoardName() {
+        return boardName;
+    }
+
+    public boolean isHasSubTreeCounts() {
+        return hasSubTreeCounts;
+    }
+
+    public String getThreadCount() {
+        return threadCount;
+    }
+
+    public String getReplyCount() {
+        return replyCount;
+    }
+
+    public String formattedReplyView(){
+        return threadCount + " threads | " + replyCount + " replies";
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.bradleyramunas.ccreader.WebScrape;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 
+import com.bradleyramunas.ccreader.MainActivity;
 import com.bradleyramunas.ccreader.Types.Forum;
 import com.bradleyramunas.ccreader.Types.Page;
 import com.bradleyramunas.ccreader.Types.URL;
@@ -11,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +21,13 @@ import java.util.ArrayList;
  */
 
 public class GetBoards extends AsyncTask<Void, Void, ArrayList<Page>> {
+
+    private WeakReference<Activity> weakReference;
+
+    public GetBoards(Activity activity) {
+        weakReference = new WeakReference<Activity>(activity);
+    }
+
     @Override
     protected ArrayList<Page> doInBackground(Void... voids) {
         ArrayList<Page> returner = new ArrayList<>();
@@ -43,16 +53,16 @@ public class GetBoards extends AsyncTask<Void, Void, ArrayList<Page>> {
                 Element dataSet = z.select(".DataList").first();
                 Elements linksInDataSet = dataSet.select(".CategoryName").select("a");
                 for(Element e : linksInDataSet){
-                    String relativeURL = e.attr("href");
+                    String relativeURL = e.attr("abs:href");
                     String boardName = e.html().replaceAll("&amp;", "&");
                     Element threadCount = e.select(".ThreadsCount").first();
                     Element replyCount = e.select(".RepliesCount").first();
                     if(threadCount != null && replyCount != null){
                         String threadCounts = threadCount.text();
                         String replyCounts = replyCount.text();
-                        returner.add(Forum.createForumFromRelativeURL(relativeURL, boardName, threadCounts, replyCounts));
+                        returner.add(new Forum(new URL(relativeURL), boardName, threadCounts, replyCounts));
                     }else{
-                        returner.add(Forum.createForumFromRelativeURL(relativeURL, boardName));
+                        returner.add(new Forum(new URL(relativeURL), boardName));
                     }
                 }
             }
@@ -66,11 +76,16 @@ public class GetBoards extends AsyncTask<Void, Void, ArrayList<Page>> {
 
     @Override
     protected void onPreExecute() {
+        MainActivity mainActivity = (MainActivity) weakReference.get();
+        mainActivity.startProgressBar();
         super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(ArrayList<Page> pages) {
+        MainActivity mainActivity = (MainActivity) weakReference.get();
+        mainActivity.stopProgressBar();
+        mainActivity.changeAdapter(pages);
         super.onPostExecute(pages);
     }
 

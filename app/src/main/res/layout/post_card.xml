@@ -52,7 +52,7 @@
                     android:text="PostTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
+                    android:id="@+id/postCardThreadName"
                     android:layout_weight="1"
                     android:textAppearance="@style/TextAppearance.AppCompat"
                     android:textSize="16sp"
@@ -67,28 +67,28 @@
 
                 <TextView
                     android:text="Post By"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/postCardAuthorText"
                     android:layout_weight="1" />
 
                 <TextView
                     android:text="Date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/postCardPostDate"
                     android:layout_weight="1" />
 
                 <TextView
                     android:text="Reply Count"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/postCardReplyCount"
                     android:layout_weight="1" />
 
                 <TextView
                     android:text="View Count"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/postCardViewCount"
                     android:layout_weight="1" />
