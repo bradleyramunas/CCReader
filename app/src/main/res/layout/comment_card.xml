@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <ImageView
+                        android:layout_width="75dp"
+                        app:srcCompat="@color/colorPrimary"
+                        android:id="@+id/comment_card_image"
+                        android:layout_height="75dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:text="Poster Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comment_card_poster_name"
+                        android:textColor="@android:color/background_dark"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:text="Poster Role"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comment_card_poster_role"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:text="Post Count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comment_card_poster_post_count"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:text="Member Type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comment_card_poster_member_type"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:text="Reply Date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comment_card_reply_date"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:text="This is a sample paragraph"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comment_card_comment_text"
+                        android:textColor="@android:color/black"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

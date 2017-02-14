@@ -2,9 +2,13 @@ package com.bradleyramunas.ccreader.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +20,7 @@ import com.bradleyramunas.ccreader.Types.Forum;
 import com.bradleyramunas.ccreader.Types.Page;
 import com.bradleyramunas.ccreader.Types.Post;
 import com.bradleyramunas.ccreader.WebScrape.ViewForum;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -73,6 +78,8 @@ public class ForumAdapter extends BaseAdapter{
                 textView.setText(forum.getBoardName());
                 TextView textView1 = (TextView) result.findViewById(R.id.boardCardBoardThreadCountText);
                 textView1.setText(forum.formattedReplyView());
+                ImageView imageView = (ImageView) result.findViewById(R.id.boardCardBoardImage);
+                Picasso.with(context).load("https://us.v-cdn.net/5020364/uploads/defaultavatar/28AAP7EH8UX2.jpg").into(imageView);
             }
             result.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,7 +120,9 @@ public class ForumAdapter extends BaseAdapter{
             result.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, post.getURL().toString() + " WOW ", Toast.LENGTH_LONG).show();
+                    MainActivity mainActivity = (MainActivity) activity.get();
+                    mainActivity.viewThread(post.getURL());
+                    //Toast.makeText(context, post.getURL().toString() + " WOW ", Toast.LENGTH_LONG).show();
                 }
             });
         }else if(currentItem == null){
@@ -121,6 +130,7 @@ public class ForumAdapter extends BaseAdapter{
             TextView textView = (TextView) result.findViewById(R.id.boardCardBoardNameText);
             textView.setText("ERROR");
         }
+
 
         return result;
     }

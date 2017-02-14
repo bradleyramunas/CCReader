@@ -70,14 +70,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/postCardAuthorText"
-                    android:layout_weight="1" />
+                    android:layout_weight="1.25" />
 
                 <TextView
                     android:text="Date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/postCardPostDate"
-                    android:layout_weight="1" />
+                    android:layout_weight="1.25" />
 
                 <TextView
                     android:text="Reply Count"

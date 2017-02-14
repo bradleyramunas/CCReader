@@ -37,7 +37,7 @@ public class Forum implements Page {
     }
 
     public boolean isShortForum(){
-        return hasSubTreeCounts;
+        return !hasSubTreeCounts;
     }
 
     public String getBoardName() {
@@ -57,7 +57,7 @@ public class Forum implements Page {
     }
 
     public String formattedReplyView(){
-        return threadCount + " threads | " + replyCount + " replies";
+        return threadCount + " | " + replyCount + "";
     }
 
     @Override

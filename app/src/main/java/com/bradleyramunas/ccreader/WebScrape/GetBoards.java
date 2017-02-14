@@ -2,6 +2,7 @@ package com.bradleyramunas.ccreader.WebScrape;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.bradleyramunas.ccreader.MainActivity;
 import com.bradleyramunas.ccreader.Types.Forum;
@@ -55,13 +56,17 @@ public class GetBoards extends AsyncTask<Void, Void, ArrayList<Page>> {
                 for(Element e : linksInDataSet){
                     String relativeURL = e.attr("abs:href");
                     String boardName = e.html().replaceAll("&amp;", "&");
-                    Element threadCount = e.select(".ThreadsCount").first();
-                    Element replyCount = e.select(".RepliesCount").first();
+                    Element threadCount = e.parent().parent().select(".ThreadsCount").first();
+                    Element replyCount = e.parent().parent().select(".RepliesCount").first();
                     if(threadCount != null && replyCount != null){
                         String threadCounts = threadCount.text();
                         String replyCounts = replyCount.text();
+                        Log.e("FORUMTYPE", "FORUM HAS THREADCOUNT OR REPLYCOUNT");
+                        Log.e("THREADS", threadCounts);
+                        Log.e("REPLIES", replyCounts);
                         returner.add(new Forum(new URL(relativeURL), boardName, threadCounts, replyCounts));
                     }else{
+                        Log.e("FORUMTYPE", "FORUM HAS NO THREADCOUNT OR REPLYCOUNT");
                         returner.add(new Forum(new URL(relativeURL), boardName));
                     }
                 }

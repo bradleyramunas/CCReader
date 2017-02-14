@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by Bradley on 2/9/2017.
@@ -74,10 +75,10 @@ public class ViewForum extends AsyncTask<URL, Void, ArrayList<Page>> {
                 isFeatured = true;
             }
 
-            Element a = e.select(".Wrap").first().select("a").first();
+            Element a = e.select(".Wrap").first().select("a.Title").first();
 
             String postName = a.text();
-            URL url = URL.createURLFromUnspecifiedSource(a.attr("href"));
+            URL url = URL.createURLFromUnspecifiedSource(a.attr("abs:href"));
 
             Element userLink = e.select(".FirstUser").first().select(".UserLink").first();
 
@@ -111,24 +112,54 @@ public class ViewForum extends AsyncTask<URL, Void, ArrayList<Page>> {
             if(subForumHolder != null){
                 Elements subForums = subForumHolder.select("li");
                 for(Element e : subForums){
-                    String forumURL = e.select("a").attr("abs:href");
-                    String forumName = e.select("a").html().replaceAll("&amp;", "&");;
-                    Element spans = e.select(".Subtree-Counts").first();
-                    String threadCount = spans.child(0).text();
-                    String replyCount = spans.child(1).text();
-                    returner.add(new Forum(new URL(forumURL), forumName, threadCount, replyCount));
+                    String forumURL = e.select("a").first().attr("abs:href");
+                    String forumName = e.select("a").first().html().replaceAll("&amp;", "&");;
+                    Elements spans = e.select(".Subtree-Count");
+                    try{
+                        String threadCount = spans.get(0).text();
+                        String replyCount = spans.get(1).text();
+                        returner.add(new Forum(new URL(forumURL), forumName, threadCount, replyCount));
+                    } catch (Exception s){
+                        returner.add(new Forum(new URL(forumURL), forumName));
+                    }
+
+
                 }
             }
-            Element discussionTable = document.select(".DiscussionsTable").get(1);
-            if(discussionTable != null){
-                Elements discussions = discussionTable.select("tr");
-                for(Element x : discussions){
+            Elements threadHolders = document.select(".DiscussionsTable");
+            for(Element holder : threadHolders){
+                Elements threads = holder.select("tbody").first().select("tr");
+                for(Element x : threads){
                     returner.add(generatePageFromElement(x));
                 }
             }
 
 
+//            Element featuredThreads = document.select(".DiscussionsTable").first().select("tbody").first();
+//            if(featuredThreads != null){
+//                Elements featureds = featuredThreads.select("tr");
+//                for(Element x : featureds){
+//                    returner.add(generatePageFromElement(x));
+//                }
+//            }
+//
+//            Element discussionTable = document.select(".DiscussionsTable").get(1).select("tbody").first();
+//            if(discussionTable != null){
+//                Elements discussions = discussionTable.select("tr");
+//
+//                for(Element x : discussions){
+//                    returner.add(generatePageFromElement(x));
+//                }
+//            }
+
+
         } catch (Exception e){
+            Log.e("STACKTRACE", e.getMessage().toString() + "");
+            StackTraceElement[] stack = e.getStackTrace();
+            for(StackTraceElement a : stack){
+                Log.e("STACKTRACE", a.toString() + "");
+            }
+
             cancel(true);
         }
         return returner;

@@ -8,14 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bradleyramunas.ccreader.Adapters.CommentAdapter;
 import com.bradleyramunas.ccreader.Adapters.ForumAdapter;
+import com.bradleyramunas.ccreader.Types.Comment;
 import com.bradleyramunas.ccreader.Types.Page;
 import com.bradleyramunas.ccreader.Types.URL;
 import com.bradleyramunas.ccreader.WebScrape.GetBoards;
+import com.bradleyramunas.ccreader.WebScrape.GetComments;
 import com.bradleyramunas.ccreader.WebScrape.ViewForum;
 
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private ListView contentViewer;
-    private Stack<ForumAdapter> backStack;
+    private Stack<BaseAdapter> backStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +94,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeAdapter(ArrayList<Page> pages){
         if(contentViewer.getAdapter() != null){
-            backStack.add((ForumAdapter)contentViewer.getAdapter());
+            backStack.add((BaseAdapter)contentViewer.getAdapter());
         }
         contentViewer.setAdapter(new ForumAdapter(this, this, pages));
+    }
+
+    public void changeAdapterC(ArrayList<Comment> comments){
+        if(contentViewer.getAdapter() != null){
+            backStack.add((BaseAdapter)contentViewer.getAdapter());
+        }
+        contentViewer.setAdapter(new CommentAdapter(this, this, comments));
     }
 
     public void deleteAdapter(){
@@ -101,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void viewBoard(URL url){
         new ViewForum(this).execute(url);
+    }
+
+    public void viewThread(URL url){
+        new GetComments(this).execute(url);
     }
 
     public void errorToast(){
