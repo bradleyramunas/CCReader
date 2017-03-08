@@ -13,6 +13,10 @@ public class Comment {
     private String replyDate;
     private String commentText;
 
+
+    public Comment() {
+    }
+
     public Comment(URL imageURL, String posterName, String posterRole, String posterPostCount, String posterMemberType, String replyDate, String commentText) {
         this.imageURL = imageURL;
         this.posterName = posterName;

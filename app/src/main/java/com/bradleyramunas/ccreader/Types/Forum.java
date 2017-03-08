@@ -28,13 +28,7 @@ public class Forum implements Page {
         this.hasSubTreeCounts = true;
     }
 
-    public static Forum createForumFromRelativeURL(String url, String boardName){
-        return new Forum(URL.createURLFromUnspecifiedSource(url), boardName);
-    }
 
-    public static Forum createForumFromRelativeURL(String url, String boardName, String threadCount, String replyCount){
-        return new Forum(URL.createURLFromUnspecifiedSource(url), boardName, threadCount, replyCount);
-    }
 
     public boolean isShortForum(){
         return !hasSubTreeCounts;
@@ -60,7 +54,6 @@ public class Forum implements Page {
         return threadCount + " | " + replyCount + "";
     }
 
-    @Override
     public URL getURL() {
         return url;
     }

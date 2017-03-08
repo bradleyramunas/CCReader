@@ -6,7 +6,9 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -23,7 +25,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_weight="4">
 
                     <ImageView
                         android:layout_width="75dp"
@@ -38,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/comment_card_poster_name"
                         android:textColor="@android:color/background_dark"
-                        android:textSize="14sp" />
+                        android:textSize="10sp" />
 
                     <TextView
                         android:text="Poster Role"
@@ -66,7 +68,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp">
 
                     <TextView
                         android:text="Reply Date"
@@ -81,6 +84,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/comment_card_comment_text"
                         android:textColor="@android:color/black"
+                        android:autoLink="web"
                         />
 
                 </LinearLayout>

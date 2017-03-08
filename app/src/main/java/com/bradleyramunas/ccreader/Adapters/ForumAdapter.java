@@ -10,15 +10,19 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bradleyramunas.ccreader.MainActivity;
 import com.bradleyramunas.ccreader.R;
 import com.bradleyramunas.ccreader.Types.Forum;
+import com.bradleyramunas.ccreader.Types.Navigation;
 import com.bradleyramunas.ccreader.Types.Page;
 import com.bradleyramunas.ccreader.Types.Post;
+import com.bradleyramunas.ccreader.Types.URL;
 import com.bradleyramunas.ccreader.WebScrape.ViewForum;
 import com.squareup.picasso.Picasso;
 
@@ -29,18 +33,27 @@ import java.util.ArrayList;
  * Created by Bradley on 2/9/2017.
  */
 
-public class ForumAdapter extends BaseAdapter{
+public class ForumAdapter extends BaseAdapter implements AdapterInterface{
 
     private Context context;
     private WeakReference<Activity> activity;
     private LayoutInflater layoutInflater;
     private ArrayList<Page> contentHolder;
+    private int scroll;
 
     public ForumAdapter(Context context, Activity activity, ArrayList<Page> contentHolder) {
         this.context = context;
         this.activity = new WeakReference<Activity>(activity);
         this.contentHolder = contentHolder;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public int getScroll() {
+        return scroll;
+    }
+
+    public void setScroll(int scroll) {
+        this.scroll = scroll;
     }
 
     public ArrayList<Page> getContentHolder(){
@@ -125,6 +138,29 @@ public class ForumAdapter extends BaseAdapter{
                     //Toast.makeText(context, post.getURL().toString() + " WOW ", Toast.LENGTH_LONG).show();
                 }
             });
+        }else if(currentItem instanceof Navigation){
+            Navigation navigation = (Navigation) currentItem;
+            result = layoutInflater.inflate(R.layout.navigation_card, viewGroup, false);
+            ArrayList<URL> urls = navigation.getUrls();
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+            LinearLayout container = (LinearLayout) result.findViewById(R.id.buttonContainer);
+            for(final URL u : urls) {
+                Button button = new Button(context);
+                button.setLayoutParams(layoutParams);
+                button.setText(u.getText());
+                button.setTextSize(10);
+                button.setBackground(null);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity mainActivity = (MainActivity) activity.get();
+                        mainActivity.viewBoard(u);
+                    }
+                });
+                container.addView(button);
+            }
+
         }else if(currentItem == null){
             result = layoutInflater.inflate(R.layout.board_card_short, viewGroup, false);
             TextView textView = (TextView) result.findViewById(R.id.boardCardBoardNameText);

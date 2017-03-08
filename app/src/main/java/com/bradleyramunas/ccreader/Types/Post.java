@@ -59,7 +59,6 @@ public class Post implements Page {
         return startedByDate;
     }
 
-    @Override
     public URL getURL() {
         return url;
     }

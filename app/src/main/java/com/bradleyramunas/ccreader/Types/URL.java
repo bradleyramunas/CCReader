@@ -7,26 +7,36 @@ package com.bradleyramunas.ccreader.Types;
 public class URL {
 
     private String url;
+    private String text;
     public final static String MAIN_FORUM_URL = "http://talk.collegeconfidential.com/";
+    private boolean selected = false;
 
     public URL(String url) {
         this.url = url;
     }
 
-    public static URL createURLFromRelativeURL(String url){
-        return new URL("http://talk.collegeconfidential.com" + url);
+    public URL(String url, String text, boolean selected) {
+        this.url = url;
+        this.text = text;
+        this.selected = selected;
     }
 
-    public static URL createURLFromUnspecifiedSource(String url){
-        if(url.contains("collegeconfidential.com")){
-            return new URL(url);
-        }else{
-            return createURLFromRelativeURL(url);
-        }
+    public String getUrl() {
+        return url;
+    }
+
+    public String getText() {
+        return text;
     }
 
     @Override
     public String toString() {
         return url;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+
 }

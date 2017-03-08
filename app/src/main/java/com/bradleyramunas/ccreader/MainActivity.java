@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bradleyramunas.ccreader.Adapters.AdapterInterface;
 import com.bradleyramunas.ccreader.Adapters.CommentAdapter;
 import com.bradleyramunas.ccreader.Adapters.ForumAdapter;
 import com.bradleyramunas.ccreader.Types.Comment;
@@ -35,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         backStack = new Stack<>();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         contentViewer = (ListView) findViewById(R.id.contentViewer);
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
             return true;
         }
 
@@ -68,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(!backStack.isEmpty()){
-            contentViewer.setAdapter(backStack.pop());
+            AdapterInterface adapter = (AdapterInterface) backStack.pop();
+            contentViewer.setAdapter((BaseAdapter) adapter);
+            contentViewer.setSelection(adapter.getScroll());
         }else{
             super.onBackPressed();
         }
@@ -85,22 +89,19 @@ public class MainActivity extends AppCompatActivity {
         contentViewer.setVisibility(View.VISIBLE);
     }
 
-    public void changeAdapter(ForumAdapter forumAdapter){
-        if(contentViewer.getAdapter() != null){
-            backStack.add((ForumAdapter)contentViewer.getAdapter());
-        }
-        contentViewer.setAdapter(forumAdapter);
-    }
 
     public void changeAdapter(ArrayList<Page> pages){
         if(contentViewer.getAdapter() != null){
+            ((AdapterInterface) contentViewer.getAdapter()).setScroll(contentViewer.getSelectedItemPosition());
             backStack.add((BaseAdapter)contentViewer.getAdapter());
+
         }
         contentViewer.setAdapter(new ForumAdapter(this, this, pages));
     }
 
     public void changeAdapterC(ArrayList<Comment> comments){
         if(contentViewer.getAdapter() != null){
+            ((AdapterInterface) contentViewer.getAdapter()).setScroll(contentViewer.getSelectedItemPosition());
             backStack.add((BaseAdapter)contentViewer.getAdapter());
         }
         contentViewer.setAdapter(new CommentAdapter(this, this, comments));

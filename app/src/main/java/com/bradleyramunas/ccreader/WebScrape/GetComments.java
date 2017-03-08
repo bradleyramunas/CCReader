@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 
 import com.bradleyramunas.ccreader.MainActivity;
 import com.bradleyramunas.ccreader.Types.Comment;
+import com.bradleyramunas.ccreader.Types.Navigation;
 import com.bradleyramunas.ccreader.Types.Page;
+import com.bradleyramunas.ccreader.Types.TextHandler;
 import com.bradleyramunas.ccreader.Types.URL;
 
 import org.jsoup.Jsoup;
@@ -41,7 +43,7 @@ public class GetComments extends AsyncTask<URL, Void, ArrayList<Comment>> {
                 String posterRole = authorDiv.select("span.RoleTitle").first().text();
                 String posterPostCount = authorDiv.select("span.PostCount").first().text();
                 String posterMemberType = authorDiv.select("span.Rank").first().text();
-                String commentText = authorDiv.select("div.Message").first().text();
+                String commentText = TextHandler.convertMessageToText(authorDiv.select("div.Message").first().html());
                 returner.add(new Comment(posterImage, posterName, posterRole, posterPostCount, posterMemberType, replyDate, commentText));
             }
 
@@ -55,9 +57,20 @@ public class GetComments extends AsyncTask<URL, Void, ArrayList<Comment>> {
                     String posterRole = x.select("span.RoleTitle").first().text();
                     String posterPostCount = x.select("span.PostCount").first().text();
                     String posterMemberType = x.select("span.Rank").first().text();
-                    String commentText = x.select("div.Message").first().text();
+                    String commentText = TextHandler.convertMessageToText(x.select("div.Message").first().html());
                     returner.add(new Comment(posterImage, posterName, posterRole, posterPostCount, posterMemberType, replyDate, commentText));
                 }
+            }
+
+            Element pageList = document.select("#PagerBefore").first();
+            if(pageList != null){
+                ArrayList<URL> pages = new ArrayList<>();
+                Elements hrefs = pageList.select("a");
+                for(Element s : hrefs){
+                    pages.add(new URL(s.attr("abs:href"), s.text(), false));
+                }
+                pages.remove(pages.size()-1);
+                returner.add(new Navigation(pages));
             }
 
 

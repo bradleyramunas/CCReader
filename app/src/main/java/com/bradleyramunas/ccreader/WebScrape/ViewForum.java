@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.bradleyramunas.ccreader.Adapters.ForumAdapter;
 import com.bradleyramunas.ccreader.MainActivity;
 import com.bradleyramunas.ccreader.Types.Forum;
+import com.bradleyramunas.ccreader.Types.Navigation;
 import com.bradleyramunas.ccreader.Types.Page;
 import com.bradleyramunas.ccreader.Types.Post;
 import com.bradleyramunas.ccreader.Types.URL;
@@ -78,7 +79,7 @@ public class ViewForum extends AsyncTask<URL, Void, ArrayList<Page>> {
             Element a = e.select(".Wrap").first().select("a.Title").first();
 
             String postName = a.text();
-            URL url = URL.createURLFromUnspecifiedSource(a.attr("abs:href"));
+            URL url = new URL(a.attr("abs:href"));
 
             Element userLink = e.select(".FirstUser").first().select(".UserLink").first();
 
@@ -134,23 +135,16 @@ public class ViewForum extends AsyncTask<URL, Void, ArrayList<Page>> {
                 }
             }
 
-
-//            Element featuredThreads = document.select(".DiscussionsTable").first().select("tbody").first();
-//            if(featuredThreads != null){
-//                Elements featureds = featuredThreads.select("tr");
-//                for(Element x : featureds){
-//                    returner.add(generatePageFromElement(x));
-//                }
-//            }
-//
-//            Element discussionTable = document.select(".DiscussionsTable").get(1).select("tbody").first();
-//            if(discussionTable != null){
-//                Elements discussions = discussionTable.select("tr");
-//
-//                for(Element x : discussions){
-//                    returner.add(generatePageFromElement(x));
-//                }
-//            }
+            Element pageList = document.select("#PagerBefore").first();
+            if(pageList != null){
+                ArrayList<URL> pages = new ArrayList<>();
+                Elements hrefs = pageList.select("a");
+                for(Element s : hrefs){
+                    pages.add(new URL(s.attr("abs:href"), s.text(), false));
+                }
+                pages.remove(pages.size()-1);
+                returner.add(new Navigation(pages));
+            }
 
 
         } catch (Exception e){

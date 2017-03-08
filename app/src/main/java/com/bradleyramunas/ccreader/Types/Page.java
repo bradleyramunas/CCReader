@@ -5,5 +5,5 @@ package com.bradleyramunas.ccreader.Types;
  */
 
 public interface Page {
-    public URL getURL();
+
 }
