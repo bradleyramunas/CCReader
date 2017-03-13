@@ -40,12 +40,14 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
     private LayoutInflater layoutInflater;
     private ArrayList<Page> contentHolder;
     private int scroll;
+    private boolean darkMode;
 
-    public ForumAdapter(Context context, Activity activity, ArrayList<Page> contentHolder) {
+    public ForumAdapter(Context context, Activity activity, ArrayList<Page> contentHolder, boolean darkMode) {
         this.context = context;
         this.activity = new WeakReference<Activity>(activity);
         this.contentHolder = contentHolder;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.darkMode = darkMode;
     }
 
     public int getScroll() {
@@ -82,11 +84,21 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
         if(currentItem instanceof Forum){
             final Forum forum = (Forum) currentItem;
             if(forum.isShortForum()){
-                result = layoutInflater.inflate(R.layout.board_card_short, viewGroup, false);
+                if(darkMode){
+                    result = layoutInflater.inflate(R.layout.board_card_short_night, viewGroup, false);
+                }else{
+                    result = layoutInflater.inflate(R.layout.board_card_short, viewGroup, false);
+                }
+
                 TextView textView = (TextView) result.findViewById(R.id.boardCardBoardNameText);
                 textView.setText(forum.getBoardName());
             }else{
-                result = layoutInflater.inflate(R.layout.board_card, viewGroup, false);
+                if(darkMode){
+                    result = layoutInflater.inflate(R.layout.board_card_night, viewGroup, false);
+                }else{
+                    result = layoutInflater.inflate(R.layout.board_card, viewGroup, false);
+                }
+
                 TextView textView = (TextView) result.findViewById(R.id.boardCardBoardNameText);
                 textView.setText(forum.getBoardName());
                 TextView textView1 = (TextView) result.findViewById(R.id.boardCardBoardThreadCountText);
@@ -103,7 +115,12 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
             });
         }else if(currentItem instanceof Post){
             final Post post = (Post) currentItem;
-            result = layoutInflater.inflate(R.layout.post_card, viewGroup, false);
+            if(darkMode){
+                result = layoutInflater.inflate(R.layout.post_card_night, viewGroup, false);
+            }else{
+                result = layoutInflater.inflate(R.layout.post_card, viewGroup, false);
+            }
+
             ImageView imageView1 = (ImageView) result.findViewById(R.id.postCardPinned);
             ImageView imageView2 = (ImageView) result.findViewById(R.id.postCardLocked);
             ImageView imageView3 = (ImageView) result.findViewById(R.id.postCardFeatured);
@@ -140,7 +157,12 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
             });
         }else if(currentItem instanceof Navigation){
             Navigation navigation = (Navigation) currentItem;
-            result = layoutInflater.inflate(R.layout.navigation_card, viewGroup, false);
+            if(darkMode){
+                result = layoutInflater.inflate(R.layout.navigation_card_night, viewGroup, false);
+            }else{
+                result = layoutInflater.inflate(R.layout.navigation_card, viewGroup, false);
+            }
+
             ArrayList<URL> urls = navigation.getUrls();
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
@@ -162,7 +184,12 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
             }
 
         }else if(currentItem == null){
-            result = layoutInflater.inflate(R.layout.board_card_short, viewGroup, false);
+            if(darkMode){
+                result = layoutInflater.inflate(R.layout.board_card_short_night, viewGroup, false);
+            }else{
+                result = layoutInflater.inflate(R.layout.board_card_short, viewGroup, false);
+            }
+
             TextView textView = (TextView) result.findViewById(R.id.boardCardBoardNameText);
             textView.setText("ERROR");
         }

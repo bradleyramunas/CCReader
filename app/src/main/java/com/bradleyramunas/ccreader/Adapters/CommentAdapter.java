@@ -32,12 +32,14 @@ public class CommentAdapter extends BaseAdapter implements AdapterInterface{
     private ArrayList<Comment> comments;
     private LayoutInflater layoutInflater;
     private int scroll = 0;
+    private boolean darkMode;
 
-    public CommentAdapter(Context context, Activity activity, ArrayList<Comment> comments) {
+    public CommentAdapter(Context context, Activity activity, ArrayList<Comment> comments, boolean darkMode) {
         this.context = context;
         this.activity = new WeakReference<Activity>(activity);
         this.comments = comments;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.darkMode = darkMode;
     }
 
     public int getScroll() {
@@ -69,7 +71,11 @@ public class CommentAdapter extends BaseAdapter implements AdapterInterface{
         View returner = null;
         if(currentItem instanceof Navigation){
             Navigation navigation = (Navigation) currentItem;
-            returner = layoutInflater.inflate(R.layout.navigation_card, viewGroup, false);
+            if(darkMode){
+                returner = layoutInflater.inflate(R.layout.navigation_card_night, viewGroup, false);
+            }else{
+                returner = layoutInflater.inflate(R.layout.navigation_card, viewGroup, false);
+            }
             ArrayList<URL> urls = navigation.getUrls();
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
@@ -92,7 +98,12 @@ public class CommentAdapter extends BaseAdapter implements AdapterInterface{
             }
         }else{
             Comment currentComment = (Comment) currentItem;
-            returner = layoutInflater.inflate(R.layout.comment_card, viewGroup, false);
+            if(darkMode){
+                returner = layoutInflater.inflate(R.layout.comment_card_night, viewGroup, false);
+            }else{
+                returner = layoutInflater.inflate(R.layout.comment_card, viewGroup, false);
+            }
+
             ImageView imageView = (ImageView) returner.findViewById(R.id.comment_card_image);
             Picasso.with(context).load(currentComment.getImageURL().toString()).into(imageView);
 

@@ -1,6 +1,8 @@
 package com.bradleyramunas.ccreader;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bradleyramunas.ccreader.Adapters.AdapterInterface;
@@ -31,17 +34,28 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ListView contentViewer;
     private Stack<BaseAdapter> backStack;
+    private boolean darkMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        darkMode = false;
         backStack = new Stack<>();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         contentViewer = (ListView) findViewById(R.id.contentViewer);
         new GetBoards(this).execute();
+    }
+
+    public void updateActivityBackgroundColor(){
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity);
+        if(darkMode){
+            coordinatorLayout.setBackgroundColor(Color.BLACK);
+        }else{
+            coordinatorLayout.setBackgroundColor(Color.parseColor("#FAFAFA"));
+        }
     }
 
     @Override
@@ -60,7 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
+            darkMode = !darkMode;
+            backStack.clear();
+            deleteAdapter();
+            updateActivityBackgroundColor();
+            new GetBoards(this).execute();
             return true;
         }
 
@@ -96,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             backStack.add((BaseAdapter)contentViewer.getAdapter());
 
         }
-        contentViewer.setAdapter(new ForumAdapter(this, this, pages));
+        contentViewer.setAdapter(new ForumAdapter(this, this, pages, darkMode));
     }
 
     public void changeAdapterC(ArrayList<Comment> comments){
@@ -104,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             ((AdapterInterface) contentViewer.getAdapter()).setScroll(contentViewer.getSelectedItemPosition());
             backStack.add((BaseAdapter)contentViewer.getAdapter());
         }
-        contentViewer.setAdapter(new CommentAdapter(this, this, comments));
+        contentViewer.setAdapter(new CommentAdapter(this, this, comments, darkMode));
     }
 
     public void deleteAdapter(){
