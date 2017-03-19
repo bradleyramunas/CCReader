@@ -2,6 +2,7 @@ package com.bradleyramunas.ccreader.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bradleyramunas.ccreader.MainActivity;
 import com.bradleyramunas.ccreader.R;
+import com.bradleyramunas.ccreader.ThreadActivity;
 import com.bradleyramunas.ccreader.Types.Comment;
 import com.bradleyramunas.ccreader.Types.Navigation;
 import com.bradleyramunas.ccreader.Types.URL;
@@ -84,13 +86,22 @@ public class CommentAdapter extends BaseAdapter implements AdapterInterface{
                 Button button = new Button(context);
                 button.setLayoutParams(layoutParams);
                 button.setText(u.getText());
+                if(darkMode){
+                    button.setTextColor(Color.WHITE);
+                }
                 button.setTextSize(8);
                 button.setBackground(null);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MainActivity mainActivity = (MainActivity) activity.get();
-                        mainActivity.viewThread(u);
+                        if(activity.get() instanceof MainActivity){
+                            MainActivity mainActivity = (MainActivity) activity.get();
+                            mainActivity.viewThread(u);
+                        }else if(activity.get() instanceof ThreadActivity){
+                            ThreadActivity mainActivity = (ThreadActivity) activity.get();
+                            mainActivity.viewThread(u);
+                        }
+
                     }
                 });
                 container.addView(button);

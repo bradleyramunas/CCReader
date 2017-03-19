@@ -2,6 +2,7 @@ package com.bradleyramunas.ccreader.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -151,7 +152,7 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
                 @Override
                 public void onClick(View view) {
                     MainActivity mainActivity = (MainActivity) activity.get();
-                    mainActivity.viewThread(post.getURL());
+                    mainActivity.viewThread(post.getURL(), post.getPostName());
                     //Toast.makeText(context, post.getURL().toString() + " WOW ", Toast.LENGTH_LONG).show();
                 }
             });
@@ -172,6 +173,9 @@ public class ForumAdapter extends BaseAdapter implements AdapterInterface{
                 button.setLayoutParams(layoutParams);
                 button.setText(u.getText());
                 button.setTextSize(10);
+                if(darkMode){
+                    button.setTextColor(Color.WHITE);
+                }
                 button.setBackground(null);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

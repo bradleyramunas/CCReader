@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.bradleyramunas.ccreader.MainActivity;
+import com.bradleyramunas.ccreader.ThreadActivity;
 import com.bradleyramunas.ccreader.Types.Comment;
 import com.bradleyramunas.ccreader.Types.Navigation;
 import com.bradleyramunas.ccreader.Types.Page;
@@ -84,14 +85,14 @@ public class GetComments extends AsyncTask<URL, Void, ArrayList<Comment>> {
 
     @Override
     protected void onPreExecute() {
-        MainActivity mainActivity = (MainActivity) weakReference.get();
+        ThreadActivity mainActivity = (ThreadActivity) weakReference.get();
         mainActivity.startProgressBar();
         super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(ArrayList<Comment> comments) {
-        MainActivity mainActivity = (MainActivity) weakReference.get();
+        ThreadActivity mainActivity = (ThreadActivity) weakReference.get();
         mainActivity.stopProgressBar();
         mainActivity.changeAdapterC(comments);
         super.onPostExecute(comments);
